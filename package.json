@@ -1,6 +1,6 @@
 {
   "name": "component-creator-reactjs",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "component-creator-reactjs is a cli, so that you can build your projects faster.",
   "main": "app.js",
   "scripts": {

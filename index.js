@@ -7,7 +7,7 @@ const os = require('os');
 const Listr = require('listr');
 const reportbug = require('./report.model.js');
 const mongoose = require('mongoose');
-const db = `mongodb+srv://ayushshah:${process.env.DB_PASSWORD}@cluster0.qo9lg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const db = `mongodb+srv://ayushshah:S6aTCEz4b5athayc@cluster0.qo9lg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 mongoose.Promise = global.Promise;
 const error = chalk.white.bgRed.bold;
@@ -43,7 +43,7 @@ const createComponent = () => {
             choices: ['.scss','.css','.less']
         }
     ]).then(answers => {
-        const def = __dirname + '/components';
+        const def = process.cwd() + '/components';
         fs.mkdirSync(def, {recursive:true} ,(err) => {
             if(err) {
                 console.log(error("ERR!")+" Could not create components! Please try again!");
@@ -52,7 +52,6 @@ const createComponent = () => {
         });
         let arrOfComponents = answers.components.split(" ").filter(component => component.length);
         let existingComponents = fs.readdirSync(def), existsAlready = false;
-        let task;
         arrOfComponents.forEach(component => {
             let nameOfComponent = component.charAt(0).toUpperCase() + component.slice(1);
             if(existingComponents.includes(nameOfComponent)) {
@@ -69,69 +68,54 @@ const createComponent = () => {
                 }
             ]).then(result => {
                 if(result.confirmOverwritting) {
-                        task = new Listr([
-                        {
-                            title: "Creating your components",
-                            task: () => {
-                                arrOfComponents.forEach(component => {
-                                    let nameOfComponent = component.charAt(0).toUpperCase() + component.slice(1);
-                                    const path = def+'/'+nameOfComponent;
-                                    if(existingComponents.includes(nameOfComponent)) {
-                                        rimraf.sync(path);
-                                    }
-                                    fs.mkdir(path, {recursive:true}, (err) => {
-                                        if(err) {
-                                            console.log(err);
-                                        } else {
-                                            const ComponentFileName = '/'+nameOfComponent+answers.optionsForjs;
-                                            const StylesheetFileName = '/'+nameOfComponent+answers.optionsForcss;
-                                            const ComponentFileNamePath = path+ComponentFileName;
-                                            const StylesheetFileNamePath = path+StylesheetFileName;
-                                            fs.writeFileSync(ComponentFileNamePath,boilerPlate(StylesheetFileName,nameOfComponent));
-                                            fs.writeFileSync(StylesheetFileNamePath,``);
-                                        }
-                                    });
-                                });
-                            }
+                    arrOfComponents.forEach(component => {
+                        let nameOfComponent = component.charAt(0).toUpperCase() + component.slice(1);
+                        const path = def+'/'+nameOfComponent;
+                        if(existingComponents.includes(nameOfComponent)) {
+                            rimraf.sync(path);
                         }
-                    ]);
+                        fs.mkdir(path, {recursive:true}, (err) => {
+                            if(err) {
+                                console.log(`${error("ERR!")} Something went wrong while creating components! Please try again!`);
+                                return;
+                            } else {
+                                const ComponentFileName = '/'+nameOfComponent+answers.optionsForjs;
+                                const StylesheetFileName = '/'+nameOfComponent+answers.optionsForcss;
+                                const ComponentFileNamePath = path+ComponentFileName;
+                                const StylesheetFileNamePath = path+StylesheetFileName;
+                                fs.writeFileSync(ComponentFileNamePath,boilerPlate(StylesheetFileName,nameOfComponent));
+                                fs.writeFileSync(StylesheetFileNamePath,``);
+                            }
+                        });
+                    });
+                    console.log(`✔️ Components created successfully!`);
                 } else {
                     return;
                 }
             });
         } else {
-                task = new Listr([
-                {
-                    title: "Creating your components",
-                    task: () => {
-                        arrOfComponents.forEach(component => {
-                            let nameOfComponent = component.charAt(0).toUpperCase() + component.slice(1);
-                            const path = def+'/'+nameOfComponent;
-                            if(existingComponents.includes(nameOfComponent)) {
-                                rimraf.sync(path);
-                            }
-                            fs.mkdir(path, {recursive:true}, (err) => {
-                                if(err) {
-                                    console.log(err);
-                                } else {
-                                    const ComponentFileName = '/'+nameOfComponent+answers.optionsForjs;
-                                    const StylesheetFileName = '/'+nameOfComponent+answers.optionsForcss;
-                                    const ComponentFileNamePath = path+ComponentFileName;
-                                    const StylesheetFileNamePath = path+StylesheetFileName;
-                                    fs.writeFileSync(ComponentFileNamePath,boilerPlate(StylesheetFileName,nameOfComponent));
-                                    fs.writeFileSync(StylesheetFileNamePath,``);
-                                }
-                            });
-                        });
-                    }
+            arrOfComponents.forEach(component => {
+                let nameOfComponent = component.charAt(0).toUpperCase() + component.slice(1);
+                const path = def+'/'+nameOfComponent;
+                if(existingComponents.includes(nameOfComponent)) {
+                    rimraf.sync(path);
                 }
-            ]);
-        }
-        task.run().then(() => {
+                fs.mkdir(path, {recursive:true}, (err) => {
+                    if(err) {
+                        console.log(`${error("ERR!")} Something went wrong while creating components! Please try again!`);
+                        return;
+                    } else {
+                        const ComponentFileName = '/'+nameOfComponent+answers.optionsForjs;
+                        const StylesheetFileName = '/'+nameOfComponent+answers.optionsForcss;
+                        const ComponentFileNamePath = path+ComponentFileName;
+                        const StylesheetFileNamePath = path+StylesheetFileName;
+                        fs.writeFileSync(ComponentFileNamePath,boilerPlate(StylesheetFileName,nameOfComponent));
+                        fs.writeFileSync(StylesheetFileNamePath,``);
+                    }
+                });
+            });
             console.log(`✔️ Components created successfully!`);
-        }).catch(err => {
-            console.log(`${error("ERR!")} Something went wrong while creating components! Please try again!`);
-        })
+        }
     }).catch((error) => {
         if (error.isTtyError) {
             console.log(`${error("ERR!")} Oops! Something went wrong with the environment!`);
@@ -142,7 +126,7 @@ const createComponent = () => {
 }
 
 const removeComponent = () => {
-    const def = __dirname + '/components';
+    const def = process.cwd() + '/components';
     if(!fs.existsSync(def)) {
         console.log(`${error("ERR!")} No components to remove in current directory!`);
         return;
@@ -173,10 +157,10 @@ const removeComponent = () => {
                         }
                     });
                 }
+                console.log(`✔️ Components removed successfully!`);
                 return;
             })
         }
-        console.log(`✔️ Components removed successfully!`);
     }).catch((error) => {
         if (error.isTtyError) {
             console.log(`${error("ERR!")} Oops❗ Something went wrong with the environment! ⚠️`);
@@ -188,7 +172,7 @@ const removeComponent = () => {
 
 
 const removeAllComponents = () => {
-    const def = __dirname + '/components';
+    const def = process.cwd() + '/components';
     if(!fs.existsSync(def)) {
         console.log(`${error("ERR!")} No Components to remove!`);
         return;
