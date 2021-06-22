@@ -1,6 +1,6 @@
 {
   "name": "component-creator-reactjs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "component-creator-reactjs is a cli, so that you can build your projects faster.",
   "main": "app.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "react",
     "react-components"
   ],
+  "gitrepository": "https://github.com/omega07/component-creator-reactjs.git",
   "author": "Ayush",
   "license": "MIT",
   "dependencies": {
