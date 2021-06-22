@@ -1,0 +1,32 @@
+{
+  "name": "component-creator-reactjs",
+  "version": "1.0.0",
+  "description": "component-creator-reactjs is a cli, so that you can build your projects faster.",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app"
+  },
+  "bin": {
+    "rcc": "app.js"
+  },
+  "keywords": [
+    "react",
+    "react-components"
+  ],
+  "author": "Ayush",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "commander": "^7.2.0",
+    "dotenv": "^10.0.0",
+    "enquirer": "^2.3.6",
+    "inquirer": "^8.1.1",
+    "listr": "^0.14.3",
+    "mongoose": "^5.12.14",
+    "rimraf": "^3.0.2",
+    "synchronized-promise": "^0.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
