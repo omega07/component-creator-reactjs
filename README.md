@@ -48,3 +48,11 @@ This will remove all the components from you cwd, and also delete the components
 ? WARN! Are you sure: Yes
 ✔️ All Components Removed!
 ```
+
+### Report Bugs
+Since this is in early development stage, there might be bugs.
+```console
+rcc report
+```
+
+This will prompt you an option for registering a bug.
