@@ -49,7 +49,7 @@ This will remove all the components from you cwd, and also delete the components
 ✔️ All Components Removed!
 ```
 
-### Report Bugs
+# Report Bugs
 Since this is in early development stage, there might be bugs.
 ```console
 rcc report
